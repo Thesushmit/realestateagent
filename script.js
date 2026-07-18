@@ -85,18 +85,26 @@ async function askAI(message) {
         removeTypingIndicator();
 
         if (!response.ok) {
-            throw new Error('Server Error');
+            const errorText = await response.text();
+            throw new Error(`Server Error: ${errorText || response.status}`);
         }
 
-        const data = await response.json();
-        console.log('AI Response:', data);
+        const rawText = await response.text();
+        let data = null;
+
+        if (rawText.trim()) {
+            try {
+                data = JSON.parse(rawText);
+            } catch (err) {
+                data = rawText;
+            }
+        }
 
         const reply =
-            data.output ||
-            data.reply ||
-            data.text ||
-            data.response ||
-            JSON.stringify(data);
+            (data && typeof data === 'object' &&
+                (data.output || data.reply || data.text || data.response)) ||
+            (typeof data === 'string' ? data : '') ||
+            '✅ AI Agent responded successfully, but the response body was empty.';
 
         addMessage(reply, 'ai');
         addStatus(`Response time: ${elapsed.toFixed(2)}s`);

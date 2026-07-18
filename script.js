@@ -1,125 +1,174 @@
-const assistantPanel = document.getElementById('assistant');
-const assistantBody = document.getElementById('assistantBody');
-const messageInput = document.getElementById('messageInput');
-const sendButton = document.getElementById('sendButton');
-const openChatButton = document.getElementById('openChatButton');
+const assistantPanel = document.getElementById("assistant");
+const assistantBody = document.getElementById("assistantBody");
+const messageInput = document.getElementById("messageInput");
+const sendButton = document.getElementById("sendButton");
+const openChatButton = document.getElementById("openChatButton");
+
 let typingBubble = null;
 
+// Open chat
+openChatButton.addEventListener("click", () => {
+    assistantPanel.classList.remove("closed");
+    assistantPanel.classList.add("open");
+    messageInput.focus();
+});
+
+// Escape HTML
 function escapeHtml(text) {
     return text
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;');
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;");
 }
 
-function formatAiText(text) {
-    const escaped = escapeHtml(text);
-    const withBold = escaped.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
-    return withBold.replace(/\r?\n/g, '<br />');
+// Format AI message
+function formatAI(text) {
+    return escapeHtml(text)
+        .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
+        .replace(/\n/g, "<br>");
 }
 
+// Add message
 function addMessage(text, sender) {
-    const bubble = document.createElement('div');
-    bubble.className = sender === 'user' ? 'bubble user-bubble' : 'bubble ai-bubble';
 
-    if (sender === 'ai') {
-        bubble.innerHTML = formatAiText(text);
+    const bubble = document.createElement("div");
+
+    bubble.className =
+        sender === "user"
+            ? "bubble user-bubble"
+            : "bubble ai-bubble";
+
+    if (sender === "ai") {
+        bubble.innerHTML = formatAI(text);
     } else {
         bubble.textContent = text;
     }
 
     assistantBody.appendChild(bubble);
+
     assistantBody.scrollTop = assistantBody.scrollHeight;
 }
 
-function showTypingIndicator() {
-    if (typingBubble) return;
-    typingBubble = document.createElement('div');
-    typingBubble.className = 'bubble typing-indicator';
-    typingBubble.textContent = 'AI is typing...';
+// Typing indicator
+function showTyping() {
+
+    typingBubble = document.createElement("div");
+
+    typingBubble.className = "bubble ai-bubble";
+
+    typingBubble.innerHTML = "⌛ AI is typing...";
+
     assistantBody.appendChild(typingBubble);
+
     assistantBody.scrollTop = assistantBody.scrollHeight;
+
 }
 
-function removeTypingIndicator() {
-    if (!typingBubble) return;
-    typingBubble.remove();
-    typingBubble = null;
+function hideTyping() {
+
+    if (typingBubble) {
+
+        typingBubble.remove();
+
+        typingBubble = null;
+
+    }
+
 }
 
-if (openChatButton && messageInput && assistantPanel) {
-    openChatButton.addEventListener('click', () => {
-        assistantPanel.classList.add('open');
-        assistantPanel.classList.remove('closed');
-        assistantPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        setTimeout(() => messageInput.focus(), 350);
-    });
-}
-
-// Send message to n8n
+// Call n8n
 async function askAI(message) {
-    const start = performance.now();
-    showTypingIndicator();
+
+    showTyping();
 
     try {
+
         const response = await fetch(
-            'https://sushmit.app.n8n.cloud/webhook/reatestatechat',
+            "https://sushmit.app.n8n.cloud/webhook/reatestatechat",
             {
-                method: 'POST',
+                method: "POST",
+
                 headers: {
-                    'Content-Type': 'application/json'
+                    "Content-Type": "application/json"
                 },
-                body: JSON.stringify({ message })
+
+                body: JSON.stringify({
+                    message: message
+                })
             }
         );
 
-        const elapsed = (performance.now() - start) / 1000;
-        removeTypingIndicator();
+        hideTyping();
 
         if (!response.ok) {
-            const errorText = await response.text();
-            throw new Error(`Server Error: ${errorText || response.status}`);
+
+            throw new Error(
+                "Server Error " + response.status
+            );
+
         }
 
-        const rawText = await response.text();
-        let data = null;
+        const raw = await response.text();
 
-        if (rawText.trim()) {
-            try {
-                data = JSON.parse(rawText);
-            } catch (err) {
-                data = rawText;
-            }
-        }
+        console.log("Webhook Response:", raw);
 
-        const reply =
-            (typeof rawText === 'string' && rawText.trim()) ||
-            (data && typeof data === 'object' &&
-                (data.output || data.reply || data.text || data.response)) ||
-            'AI Agent responded successfully, but the response was empty.';
+        let reply = raw;
 
-        addMessage(reply, 'ai');
-    } catch (error) {
-        removeTypingIndicator();
-        console.error(error);
-        addMessage('❌ Unable to connect to the AI Agent.', 'ai');
-        addStatus(`Response time: ${(performance.now() - start / 1000).toFixed(2)}s`);
+        try {
+
+            const data = JSON.parse(raw);
+
+            reply =
+                data.output ||
+                data.reply ||
+                data.text ||
+                data.response ||
+                raw;
+
+        } catch (e) {}
+
+        addMessage(reply, "ai");
+
+    } catch (err) {
+
+        hideTyping();
+
+        console.error(err);
+
+        addMessage(
+            "❌ Unable to connect to AI Agent.",
+            "ai"
+        );
+
     }
+
 }
 
-if (sendButton && messageInput && assistantBody) {
-    sendButton.addEventListener('click', sendMessage);
-    messageInput.addEventListener('keypress', function (e) {
-        if (e.key === 'Enter') {
-            sendMessage();
-        }
-    });
-}
-
+// Send
 function sendMessage() {
+
     const message = messageInput.value.trim();
+
     if (!message) return;
-    addMessage(message, 'user');
-    messageInput.value = '';
+
+    addMessage(message, "user");
+
+    messageInput.value = "";
+
     askAI(message);
+
 }
+
+sendButton.addEventListener("click", sendMessage);
+
+messageInput.addEventListener("keydown", function (e) {
+
+    if (e.key === "Enter") {
+
+        e.preventDefault();
+
+        sendMessage();
+
+    }
+
+});

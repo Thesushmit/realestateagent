@@ -1,76 +1,167 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Right Choice Legal Documents</title>
-    <meta name="description" content="Professional legal documentation support with an AI-powered assistant." />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="styles.css" />
-  </head>
-  <body>
-    <div class="page-shell">
-      <header class="hero-header">
-        <div class="brand-block">
-          <p class="eyebrow">Trusted • Professional • Local</p>
-          <h1>Right Choice Legal Documents</h1>
-          <p class="hero-copy">
-            Reliable legal documentation support for clients who value accuracy,
-            professionalism, and fast assistance in every step of the process.
-          </p>
-        </div>
-      </header>
 
-      <main class="content-grid">
-        <section class="info-panel">
-          <div class="panel-card">
-            <h2>Professional support for every document need</h2>
-            <p>
-              Right Choice Legal Documents offers dependable assistance with
-              documentation services, guided support, and a smooth experience
-              for clients seeking clarity and confidence.
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Right Choice Legal Documents</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+    <div class="page-shell">
+
+        <!-- Hero Section -->
+
+        <header class="hero-header">
+
+            <p class="eyebrow">
+                Trusted • Professional • Local
             </p>
 
-            <div class="contact-card">
-              <h3>Business Information</h3>
-              <p><strong>Right Choice Legal Documents</strong></p>
-              <p>Shop No. 7, Near Tempo Chowk</p>
-              <p>Samaarth Nagar Cooperative Society</p>
-              <p>Samarth Nagar Co. Op Society</p>
-              <p>Vadgaon Sheri, Pune - 411014</p>
-              <p>Maharashtra</p>
-            </div>
+            <h1>
+                Right Choice Legal Documents
+            </h1>
 
-            <div class="action-row">
-              <button id="openChatButton" class="primary-btn">Talk to AI Agent</button>
-            </div>
-          </div>
-        </section>
+            <p class="hero-copy">
+                Reliable legal documentation and real estate services.
+                Get instant answers from our AI Assistant for rent agreements,
+                property registration, sale deeds, leave & license agreements,
+                and many more legal services.
+            </p>
 
-        <aside class="assistant-panel closed" id="assistant">
-          <div class="panel-card assistant-card">
-            <div class="assistant-top">
-              <div>
-                <p class="eyebrow">AI assistant</p>
-                <h3>Ask the agent anything</h3>
-              </div>
-            </div>
+        </header>
 
-            <div class="assistant-body" id="assistantBody">
-              <div class="bubble ai-bubble">How may I help you today?</div>
-            </div>
+        <main class="content-grid">
 
-            <div class="assistant-footer">
-              <input type="text" id="messageInput" placeholder="Type your message..." />
-              <button id="sendButton">Send</button>
-            </div>
-          </div>
-        </aside>
-      </main>
+            <!-- Left Side -->
+
+            <section>
+
+                <div class="panel-card">
+
+                    <h2>
+                        Professional Legal Documentation Services
+                    </h2>
+
+                    <br>
+
+                    <p>
+                        We help individuals and businesses with legal
+                        documentation, property registration, rent agreements,
+                        leave & license agreements, stamp duty guidance,
+                        and document verification.
+                    </p>
+
+                    <div class="contact-card">
+
+                        <h3>Business Information</h3>
+
+                        <br>
+
+                        <p><strong>Right Choice Legal Documents</strong></p>
+
+                        <p>
+                            Shop No. 7,
+                            Near Tempo Chowk
+                        </p>
+
+                        <p>
+                            Samaarth Nagar Cooperative Society
+                        </p>
+
+                        <p>
+                            Vadgaon Sheri,
+                            Pune - 411014
+                        </p>
+
+                        <p>
+                            Maharashtra
+                        </p>
+
+                    </div>
+
+                    <button id="openChatButton" class="primary-btn">
+                        💬 Talk to AI Agent
+                    </button>
+
+                </div>
+
+            </section>
+
+            <!-- Chat Panel -->
+
+            <aside id="assistant" class="assistant-panel">
+
+                <div class="panel-card assistant-card">
+
+                    <div class="assistant-top">
+
+                        <div>
+
+                            <p class="eyebrow">
+                                AI Assistant
+                            </p>
+
+                            <h3>
+                                Ask me anything
+                            </h3>
+
+                        </div>
+
+                    </div>
+
+                    <div
+                        class="assistant-body"
+                        id="assistantBody">
+
+                        <div class="bubble ai-bubble">
+
+                            👋 Hello!
+
+                            <br><br>
+
+                            Welcome to Right Choice Legal Documents.
+
+                            <br><br>
+
+                            How may I help you today?
+
+                        </div>
+
+                    </div>
+
+                    <div class="assistant-footer">
+
+                        <input
+                            type="text"
+                            id="messageInput"
+                            placeholder="Type your message...">
+
+                        <button id="sendButton">
+                            Send
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </aside>
+
+        </main>
+
     </div>
 
     <script src="script.js"></script>
-  </body>
+
+</body>
+
 </html>

@@ -84,7 +84,7 @@ async function askAI(message) {
     try {
 
         const response = await fetch(
-            "https://sushmit.app.n8n.cloud/webhook/reatestatechat",
+            "https://sushmit.app.n8n.cloud/webhook-test/reatestatechat",
             {
                 method: "POST",
 

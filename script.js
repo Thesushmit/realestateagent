@@ -32,14 +32,6 @@ function addMessage(text, sender) {
     assistantBody.scrollTop = assistantBody.scrollHeight;
 }
 
-function addStatus(text) {
-    const bubble = document.createElement('div');
-    bubble.className = 'bubble wait-note';
-    bubble.textContent = text;
-    assistantBody.appendChild(bubble);
-    assistantBody.scrollTop = assistantBody.scrollHeight;
-}
-
 function showTypingIndicator() {
     if (typingBubble) return;
     typingBubble = document.createElement('div');
@@ -104,10 +96,9 @@ async function askAI(message) {
             (typeof rawText === 'string' && rawText.trim()) ||
             (data && typeof data === 'object' &&
                 (data.output || data.reply || data.text || data.response)) ||
-            '✅ AI Agent responded successfully, but the response body was empty.';
+            'AI Agent responded successfully, but the response was empty.';
 
         addMessage(reply, 'ai');
-        addStatus(`Response time: ${elapsed.toFixed(2)}s`);
     } catch (error) {
         removeTypingIndicator();
         console.error(error);

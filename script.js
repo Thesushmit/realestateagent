@@ -101,9 +101,9 @@ async function askAI(message) {
         }
 
         const reply =
+            (typeof rawText === 'string' && rawText.trim()) ||
             (data && typeof data === 'object' &&
                 (data.output || data.reply || data.text || data.response)) ||
-            (typeof data === 'string' ? data : '') ||
             '✅ AI Agent responded successfully, but the response body was empty.';
 
         addMessage(reply, 'ai');
